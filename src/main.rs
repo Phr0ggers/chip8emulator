@@ -1,3 +1,5 @@
+use chip8emulator::frontend::crossterm::draw_square;
+
 fn main() {
-    println!("Hello, Rust!");
+  let _ = draw_square();
 }
