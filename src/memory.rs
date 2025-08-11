@@ -1,5 +1,3 @@
-// src/memory.rs - memory layout, fontset
-
 // consts given by chip8 specs
 const MEMORY_SIZE: usize = 4096;
 

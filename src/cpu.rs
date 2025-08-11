@@ -1,5 +1,3 @@
-// src/cpu.rs - registers, timers, cycle
-
 pub struct Cpu {
   // 16 registers V0-VF
   reg: [u8; 16],
