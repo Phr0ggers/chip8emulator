@@ -1,5 +1,7 @@
-use chip8emulator::frontend::crossterm::draw_square;
+use chip8emulator::frontend::{crossterm, Frontend};
 
 fn main() {
-  let _ = draw_square();
+  let ct = crossterm::CrosstermFrontend::new();
+
+  let _ = ct.draw_square();
 }
