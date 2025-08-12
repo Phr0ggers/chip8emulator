@@ -64,7 +64,22 @@ impl CrosstermFrontend {
 
 impl Frontend for CrosstermFrontend{
   type Error = ErrorKind;
-  fn draw_display(&self, display: [[bool; WIDTH]; HEIGHT]) -> Result<(), Self::Error> {
+  fn draw_display(&self, display: &[[bool; WIDTH]; HEIGHT]) -> Result<(), Self::Error> {
+    let mut stdout = stdout();
+
+    execute!(stdout, Clear(ClearType::All))?;
+
+    for row in 0..HEIGHT {
+      queue!(stdout, MoveTo(0, row as u16))?;
+      for col in 0..WIDTH {
+        if display[row][col] {
+          queue!(stdout, Print(ON))?;
+        } else {
+          queue!(stdout, Print(OFF))?;
+        };
+      }
+    }
+
     Ok(())
   }
 }

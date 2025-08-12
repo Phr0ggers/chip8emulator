@@ -1,7 +1,18 @@
-use chip8emulator::frontend::{crossterm, Frontend};
+use chip8emulator::{display, frontend::{crossterm, Frontend}};
 
 fn main() {
   let ct = crossterm::CrosstermFrontend::new();
 
-  let _ = ct.draw_square();
+  let mut d: display::Display = display::Display::new();
+
+  d.set_pixel(0, 0, true);
+  d.set_pixel(1, 1, true);
+  d.set_pixel(3, 3, true);
+  d.set_pixel(4, 4, true);
+  d.set_pixel(3, 5, true);
+  d.set_pixel(3, 5, true);
+
+  let _ = ct.draw_display(d.get_display());
+  let _ = ct.draw_display(d.get_display());
+
 }

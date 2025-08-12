@@ -38,4 +38,40 @@ impl Cpu {
   pub fn cycle() {
 
   }
+
+  fn decode_and_execute(&mut self, op_code: u16) {
+    let n1 = (op_code >> 12) & 0xf;
+
+    match n1 {
+      0x0 => {
+        match op_code {
+          // clear display
+          0x00e0 => todo!(),
+
+          _ => ()
+        }
+      },
+      0x1 => {
+        // 0x1nnn - jump to addr nnn
+        self.pc = op_code & 0xfff;
+      },
+      0x6 => {
+        // 0x6xnn - set Vx to nn
+        self.reg[((op_code >> 8) & 0xf) as usize] = (op_code & 0xff) as u8;
+      },
+      0x7 => {
+        //0x7xnn - add nn to Vx
+        self.reg[((op_code >> 8) & 0xf) as usize] += (op_code & 0xff) as u8;
+      },
+      0xa => {
+        //0xannn - set i to nnn
+        self.i = op_code & 0xfff;
+      },
+      0xd => {
+        //0xdxyn - sets n bytes from memory at i to (Vx, Vy), Vf = collision
+        todo!();
+      },
+      _ => ()
+    }
+  }
 }
