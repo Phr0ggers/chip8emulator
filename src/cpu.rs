@@ -1,3 +1,5 @@
+use crate::{display::Display, frontend::Frontend, memory::Memory};
+
 pub struct Cpu {
   // 16 registers V0-VF
   reg: [u8; 16],
@@ -35,19 +37,31 @@ impl Cpu {
     }
   }
 
-  pub fn cycle() {
+  pub fn cycle(&mut self, display: &mut Display, memory: &mut Memory, frontend: impl Frontend) {
+    let op_code = memory.fetch(self.pc);
 
+    self.pc += 2;
+
+    let redraw = self.decode_and_execute(op_code, display);
+
+    if redraw {
+      let _ = frontend.draw_display(display.get_display());
+    }
   }
 
-  fn decode_and_execute(&mut self, op_code: u16) {
+  fn decode_and_execute(&mut self, op_code: u16, display: &mut Display) -> bool {
     let n1 = (op_code >> 12) & 0xf;
+
+    let mut redraw = false;
 
     match n1 {
       0x0 => {
         match op_code {
           // clear display
-          0x00e0 => todo!(),
-
+          0x00e0 => {
+            display.clear();
+            redraw = true;
+          },
           _ => ()
         }
       },
@@ -71,7 +85,9 @@ impl Cpu {
         //0xdxyn - sets n bytes from memory at i to (Vx, Vy), Vf = collision
         todo!();
       },
-      _ => ()
-    }
+      _ => (),
+
+    };
+    redraw
   }
 }

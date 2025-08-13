@@ -6,6 +6,6 @@ pub mod crossterm;
 pub trait Frontend {
   type Error;
 
-  /// Shows the current pixel occupancy of 'display'
+  /// Draws the current pixel occupancy of 'display'
   fn draw_display(&self, display: &[[bool; WIDTH]; HEIGHT]) -> Result<(), Self::Error>;
 }

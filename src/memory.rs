@@ -46,4 +46,10 @@ impl Memory {
   pub fn store(&mut self, addr: u16, val: u8) {
     self.data[addr as usize] = val;
   }
+
+  pub fn fetch(&mut self, addr: u16) -> u16 {
+    let high = self.data[addr as usize] as u16;
+    let low = self.data[(addr + 1) as usize] as u16;
+    (high << 8) | low
+  }
 }
