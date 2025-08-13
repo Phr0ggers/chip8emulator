@@ -38,6 +38,8 @@ impl Cpu {
   }
 
   pub fn cycle(&mut self, display: &mut Display, memory: &mut Memory, frontend: impl Frontend) {
+
+    // TODO: read input somewhere inbetween and safe to 'input status' also need to do that
     let op_code = memory.fetch(self.pc);
 
     self.pc += 2;
@@ -83,7 +85,9 @@ impl Cpu {
       },
       0xd => {
         //0xdxyn - sets n bytes from memory at i to (Vx, Vy), Vf = collision
-        todo!();
+        let collision = display.draw_sprite();
+        self.reg[0xf] = if collision {1} else {0};
+        redraw = true;
       },
       _ => (),
 

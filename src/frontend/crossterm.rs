@@ -21,7 +21,7 @@ impl CrosstermFrontend {
   pub fn new() -> Self {
     CrosstermFrontend
   }
-
+  // WARN: test fn needs to be removed/ at leas not pub
   pub fn draw_square(&self) -> crossterm::Result<()> {
     let mut stdout = stdout();
 

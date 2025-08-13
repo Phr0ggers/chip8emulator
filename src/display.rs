@@ -30,4 +30,9 @@ impl Display {
   pub fn get_display(&mut self) -> &[[bool; WIDTH]; HEIGHT] {
     &self.frame_buffer
   }
+
+  pub fn draw_sprite(&mut self) -> bool {
+    // TODO: some weird ass drawing returning if there is a collision
+    todo!();
+  }
 }

@@ -8,4 +8,6 @@ pub trait Frontend {
 
   /// Draws the current pixel occupancy of 'display'
   fn draw_display(&self, display: &[[bool; WIDTH]; HEIGHT]) -> Result<(), Self::Error>;
+
+  // TODO: some input handling fn
 }
