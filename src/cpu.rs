@@ -44,14 +44,14 @@ impl Cpu {
 
     self.pc += 2;
 
-    let redraw = self.decode_and_execute(op_code, display);
+    let redraw = self.decode_and_execute(op_code, display, memory);
 
     if redraw {
       let _ = frontend.draw_display(display.get_display());
     }
   }
 
-  fn decode_and_execute(&mut self, op_code: u16, display: &mut Display) -> bool {
+  fn decode_and_execute(&mut self, op_code: u16, display: &mut Display, memory: &mut Memory) -> bool {
     let n1 = (op_code >> 12) & 0xf;
 
     let mut redraw = false;
@@ -84,8 +84,12 @@ impl Cpu {
         self.i = op_code & 0xfff;
       },
       0xd => {
-        //0xdxyn - sets n bytes from memory at i to (Vx, Vy), Vf = collision
-        let collision = display.draw_sprite();
+        //0xdxyn - draws n rows high sprite from memory at i to (Vx, Vy) on display, Vf = collision
+        let mut sprite: Vec<u8> = Vec::new();
+        for j in 0..(op_code & 0xf) {
+          sprite.push(memory.load(self.i + j))
+        };
+        let collision = display.draw_sprite(self.reg[((op_code >> 8) & 0xf) as usize], self.reg[((op_code >> 4) & 0xf) as usize], sprite);
         self.reg[0xf] = if collision {1} else {0};
         redraw = true;
       },
