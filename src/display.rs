@@ -33,6 +33,7 @@ impl Display {
 
   pub fn draw_sprite(&mut self, x: u8, y: u8, sprite: Vec<u8>) -> bool {
     // TODO: some weird ass drawing returning if there is a collision
-    todo!();
+    
+    false
   }
 }
