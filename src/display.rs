@@ -36,4 +36,8 @@ impl Display {
     
     false
   }
+
+  fn draw_row_from_u8(&mut self, x:u8, y:u8, pixels: u8) -> bool {
+    todo!();
+  }
 }
