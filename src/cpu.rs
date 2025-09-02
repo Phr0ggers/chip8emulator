@@ -85,12 +85,11 @@ impl Cpu {
       },
       0xd => {
         //0xdxyn - draws n rows high sprite from memory at i to (Vx, Vy) on display, Vf = collision
-        // TODO: maybe an array instead of a vector with size 5
-        let mut sprite: Vec<u8> = Vec::new();
+        let mut sprite = [0; 15];
         for j in 0..(op_code & 0xf) {
-          sprite.push(memory.load(self.i + j))
+          sprite[j as usize] = memory.load(self.i + j);
         };
-        let collision = display.draw_sprite(self.reg[((op_code >> 8) & 0xf) as usize], self.reg[((op_code >> 4) & 0xf) as usize], sprite);
+        let collision = display.draw_sprite(self.reg[((op_code >> 8) & 0xf) as usize], self.reg[((op_code >> 4) & 0xf) as usize], sprite, (op_code & 0xf) as u8);
         self.reg[0xf] = if collision {1} else {0};
         redraw = true;
       },

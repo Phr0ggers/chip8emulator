@@ -1,3 +1,5 @@
+use crossterm::terminal::ScrollDown;
+
 pub const WIDTH: usize = 64;
 pub const HEIGHT: usize = 32;
 
@@ -31,13 +33,26 @@ impl Display {
     &self.frame_buffer
   }
 
-  pub fn draw_sprite(&mut self, x: u8, y: u8, sprite: Vec<u8>) -> bool {
-    // TODO: some weird ass drawing returning if there is a collision
-    todo!()
+  pub fn draw_sprite(&mut self, x: u8, y: u8, sprite: [u8; 5], rows: u8) -> bool {
+    let mut coll = false;
+    for k in 0..rows {
+      coll = coll && self.draw_row_from_u8(x as usize % WIDTH, (y + k) as usize % HEIGHT, sprite[k as usize])
+    };
+    coll
   }
 
-  fn draw_row_from_u8(&mut self, x:u8, y:u8, pixels: u8) -> bool {
-    todo!();
+  fn draw_row_from_u8(&mut self, x: usize, y: usize, pixels: u8) -> bool {
+    let mut t = 0b1000_0000;
+    let mut coll = false;
+    for i in 0..8 {
+      if (t & pixels) != 0 {
+        if self.frame_buffer[x][y + 1] { coll = true; }
+        self.frame_buffer[x][y + i] = !self.frame_buffer[x][y + 1];
+
+      }
+      t = t >> 1;
+    };
+    coll
   }
 
   // INFO: Very important fn!!!
